@@ -1,0 +1,91 @@
+/* ==========================================================================
+   Bottom navigation + view switching — nav.css
+   Uses the same --jn-* tokens as journal.css (with fallbacks).
+   ========================================================================== */
+
+:root {
+  --nav-height: 68px;
+  --nav-bg: #ffffff;
+  --nav-line: var(--jn-line, #e4dfd3);
+  --nav-ink: var(--jn-ink-soft, #5f6a63);
+  --nav-active: var(--jn-forest, #2b4a3d);
+  --nav-pill: #e4ece7;
+  --nav-fade: 160ms;
+}
+
+html, body { margin: 0; background: var(--jn-paper, #f2efe8); }
+
+/* ---------- Views ---------- */
+
+.view {
+  min-height: 100dvh;
+  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
+  /* Opacity only. A transform here would trap the journal's fixed + button
+     inside the view instead of pinning it to the screen. */
+  opacity: 0;
+  transition: opacity var(--nav-fade) ease;
+}
+
+.view[hidden] { display: none; }
+.view.is-active { opacity: 1; }
+.view:focus { outline: none; }
+
+/* ---------- Bottom bar ---------- */
+
+.bottom-nav {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 950; /* above the journal + button (900), below modals (1000) */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 640px;
+  margin: 0 auto;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--nav-bg);
+  border-top: 1px solid var(--nav-line);
+  box-shadow: 0 -6px 20px rgba(40, 50, 44, 0.05);
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: var(--nav-height);
+  padding: 8px 4px;
+  color: var(--nav-ink);
+  font-family: var(--jn-sans, system-ui, sans-serif);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 30px;
+  border-radius: 999px;
+  transition: background-color var(--nav-fade) ease;
+}
+
+.nav-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-tab[aria-current="page"] { color: var(--nav-active); font-weight: 600; }
+.nav-tab[aria-current="page"] .nav-icon { background: var(--nav-pill); }
+
+.nav-tab:focus-visible { outline: 3px solid var(--nav-active); outline-offset: -6px; border-radius: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .view, .nav-icon { transition: none; }
+}
