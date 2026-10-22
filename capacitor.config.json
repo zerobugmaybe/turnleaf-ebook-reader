@@ -1,0 +1,6 @@
+{
+  "appId": "com.turnleaf.reader",
+  "appName": "TurnLeaf: Offline Ebook Reader",
+  "webDir": "www",
+  "android": { "allowMixedContent": false }
+}
